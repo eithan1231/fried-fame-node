@@ -290,6 +290,11 @@ class OpenVPNMonitor extends EventEmitter
 	async clientUpdated(session)
 	{
 		this.logger.info(`OpenVPNMonitor Client Updated ${session.commonName}`);
+
+		if(!this._validSession(session)) {
+			this.logger.info(`OpenVPNMonitor Client Updated ${session.commonName} bad session, ignored`);
+			return;
+		}
 	}
 
 	/**
@@ -299,6 +304,11 @@ class OpenVPNMonitor extends EventEmitter
 	{
 		try {
 			this.logger.info(`OpenVPNMonitor Client Disconnected ${session.commonName}`);
+
+			if(!this._validSession(session)) {
+				this.logger.info(`OpenVPNMonitor Client Disconnected ${session.commonName} bad session, ignored`);
+				return;
+			}
 
 			const ffrpc = await FFRPCClient.getRpcByType(FFRPCClient.TYPE_BACKEND);
 
@@ -335,6 +345,11 @@ class OpenVPNMonitor extends EventEmitter
 		try {
 			this.logger.info(`OpenVPNMonitor Client Connected ${session.commonName}`);
 
+			if(!this._validSession(session)) {
+				this.logger.info(`OpenVPNMonitor Client Connected ${session.commonName} bad session, ignored`);
+				return;
+			}
+
 			const ffrpc = await FFRPCClient.getRpcByType(FFRPCClient.TYPE_BACKEND);
 
 			const paramUser = parseInt(session.commonName);
@@ -354,6 +369,25 @@ class OpenVPNMonitor extends EventEmitter
 		catch(err) {
 			throw err;
 		}
+	}
+
+	/**
+	* Checks if session is valid.
+	*/
+	_validSession(session)
+	{
+		// Method for filtering out pre-authenticated clients:
+		// status file does not have routing table, so we just make sure all routing
+		// information and client list information is displayed.
+		return (
+			typeof session.commonName === 'string' &&
+			typeof session.realAddress === 'string' &&
+			typeof session.virtualAddress === 'string' &&
+			typeof session.bytesReceived === 'number' &&
+			typeof session.bytesSend === 'number' &&
+			typeof session.connectedSince === 'number' &&
+			typeof session.lastRef === 'number'
+		);
 	}
 }
 
