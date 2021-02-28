@@ -237,7 +237,7 @@ class OpenVPNMonitor extends EventEmitter
 		try {
 			// Disconnect Event. Looking through this-sessions and seeing if there is a
 			// missing entry on parameter sessions.
-			for (const property in Object.keys(this.sessions)) {
+			for (const property in this.sessions) {
 				if(typeof sessions[property] === 'undefined') {
 					// Disconnect event
 					await this.clientDisconnected(this.sessions[property]);
@@ -246,7 +246,7 @@ class OpenVPNMonitor extends EventEmitter
 
 			// Connect event. Looking through parameter sessions, and seeing if there is a
 			// missing entry on this-sessions (previous sessions)
-			for(const property in Object.keys(sessions)) {
+			for(const property in sessions) {
 				if(typeof this.sessions[property] === 'undefined') {
 					// Connect event
 					await this.clientConnected(sessions[property]);
@@ -254,7 +254,7 @@ class OpenVPNMonitor extends EventEmitter
 			}
 
 			// Update Events.
-			for (const property in Object.keys(this.sessions)) {
+			for (const property in this.sessions) {
 				if(typeof sessions[property] === 'object') {
 					if(sessions[property].connectedSince > this.sessions[property].connectedSince) {
 						// OpenVPN doesnt remove people from the status file after they
