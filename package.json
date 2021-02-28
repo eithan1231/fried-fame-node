@@ -1,0 +1,18 @@
+{
+  "name": "fried-fame-node",
+  "version": "1.0.0",
+  "description": "Fried-Fame service that runs on VPN Nodes. Tracks data usage, handles authentication forwarding, and more.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "mocha ./tests/index.js"
+  },
+  "author": "Eithan Hersey-Tuit",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "node-fetch": "^2.6.1"
+  }
+}
