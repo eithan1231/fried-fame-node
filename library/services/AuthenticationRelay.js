@@ -50,7 +50,7 @@ class AuthenticationRelay extends EventEmitter
 	_closeEvent()
 	{
 		this.logger.info(`AuthenticationRelay has closed.`);
-		this.emit('closed')
+		this.emit('close')
 	}
 
 	_setupMiddleware()

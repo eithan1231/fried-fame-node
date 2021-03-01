@@ -76,7 +76,7 @@ class OpenVPNMonitor extends EventEmitter
 		}
 
 		this.logger.info('OpenVPNMonitor has closed');
-		this.emit('closed');
+		this.emit('close');
 	}
 
 	/**
